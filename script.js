@@ -40,6 +40,39 @@ let playRound = (playerSelection, computerSelection) => {
     }
 }
 
-const computerSelection = getComputerChoice();
-const playerSelection = 'Rock';
-console.log(playRound(playerSelection, computerSelection));
+let game = () => {
+    let userPts, computerPts, rounds;
+    let playerSelection, computerSelection, roundResult;
+    userPts = 0;
+    computerPts = 0;
+    rounds = 0;
+    while (rounds < 5) {
+        rounds++;
+        while (true) {
+            playerSelection = prompt("Insert your choice ('Rock', 'Paper' or 'Scissors'");
+            playerSelection = playerSelection.toLowerCase();
+            if (playerSelection === 'rock' || playerSelection === 'paper' || playerSelection === 'scissors') 
+                break;
+            alert('Choose one of the suggested choices :)');
+        }
+        computerSelection = getComputerChoice();
+        roundResult = playRound(playerSelection, computerSelection);
+        if (roundResult.includes('won')) {
+            console.log(roundResult);
+            userPts++;
+        }
+        else if (roundResult.includes('lost')) {
+            console.log(roundResult);
+            computerPts++;
+        }
+        else {
+            console.log(roundResult);
+            userPts++;
+            computerPts++;
+        }
+    }
+
+    alert('Game Over! The score (you-pc): ' + userPts + '-' + computerPts);
+}
+
+game();
