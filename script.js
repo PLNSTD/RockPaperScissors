@@ -40,39 +40,82 @@ let playRound = (playerSelection, computerSelection) => {
     }
 }
 
-let game = () => {
-    let userPts, computerPts, rounds;
-    let playerSelection, computerSelection, roundResult;
-    userPts = 0;
-    computerPts = 0;
-    rounds = 0;
-    while (rounds < 5) {
-        rounds++;
-        while (true) {
-            playerSelection = prompt("Insert your choice ('Rock', 'Paper' or 'Scissors'");
-            playerSelection = playerSelection.toLowerCase();
-            if (playerSelection === 'rock' || playerSelection === 'paper' || playerSelection === 'scissors') 
-                break;
-            alert('Choose one of the suggested choices :)');
-        }
-        computerSelection = getComputerChoice();
-        roundResult = playRound(playerSelection, computerSelection);
-        if (roundResult.includes('won')) {
-            console.log(roundResult);
-            userPts++;
-        }
-        else if (roundResult.includes('lost')) {
-            console.log(roundResult);
-            computerPts++;
-        }
-        else {
-            console.log(roundResult);
-            userPts++;
-            computerPts++;
-        }
-    }
+// let game = () => {
+//     let userPts, computerPts, rounds;
+//     let playerSelection, computerSelection, roundResult;
+//     userPts = 0;
+//     computerPts = 0;
+//     rounds = 0;
+//     while (rounds < 5) {
+//         rounds++;
+//         while (true) {
+//             playerSelection = prompt("Insert your choice ('Rock', 'Paper' or 'Scissors'");
+//             playerSelection = playerSelection.toLowerCase();
+//             if (playerSelection === 'rock' || playerSelection === 'paper' || playerSelection === 'scissors') 
+//                 break;
+//             alert('Choose one of the suggested choices :)');
+//         }
+//         computerSelection = getComputerChoice();
+//         roundResult = playRound(playerSelection, computerSelection);
+//         if (roundResult.includes('won')) {
+//             console.log(roundResult);
+//             userPts++;
+//         }
+//         else if (roundResult.includes('lost')) {
+//             console.log(roundResult);
+//             computerPts++;
+//         }
+//         else {
+//             console.log(roundResult);
+//             userPts++;
+//             computerPts++;
+//         }
+//     }
 
-    alert('Game Over! The score (you-pc): ' + userPts + '-' + computerPts);
+//     alert('Game Over! The score (you-pc): ' + userPts + '-' + computerPts);
+// }
+
+//game();
+
+let userPts = 0;
+let computerPts = 0;
+
+let game = (roundResult) => {
+    if (roundResult.includes('won')) {
+        console.log(roundResult);
+        userPts++;
+    }
+    else if (roundResult.includes('lost')) {
+        console.log(roundResult);
+        computerPts++;
+    }
+    else {
+        console.log(roundResult);
+        userPts++;
+        computerPts++;
+    }
 }
 
-game();
+const buttons = document.querySelectorAll('button');
+const resultsContainer = document.querySelector('#results-container');
+const scoreContainer = document.querySelector('#score-container');
+
+let score = `The score (you-pc): ${userPts} - ${computerPts}`;
+scoreContainer.textContent = score;
+buttons.forEach( button => button.addEventListener('click', function () {
+    if (userPts >= 5 || computerPts >= 5) return;
+    let resultRound = playRound(button.innerHTML, getComputerChoice());
+    const pElement = document.createElement('p');
+    pElement.textContent = resultRound;
+    resultsContainer.appendChild(pElement);
+    game(resultRound);
+    score = `The score (you-pc): ${userPts} - ${computerPts}`
+    scoreContainer.textContent = score;
+    if (userPts == 5 && computerPts == 5) {
+        scoreContainer.textContent = `Game Over! It's a TIE!`;
+    } else if (computerPts == 5) {
+        scoreContainer.textContent = `Game Over! PC WON!`;
+    } else if (userPts == 5) {
+        scoreContainer.textContent = `Game Over! User WON!`;
+    }
+}));
